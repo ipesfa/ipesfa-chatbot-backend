@@ -1,0 +1,10 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+data/*.npz
+data/*_ids.json
+data/content_meta.json
+deploy.log
+models/
+.certs/

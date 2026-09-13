@@ -1,0 +1,82 @@
+[
+  {
+    "id": "carreras-profesorados",
+    "question": "¿Qué carreras o profesorados hay en el IPESFA?",
+    "alt_questions": [
+      "¿Qué profesorados hay en el instituto?",
+      "¿Qué puedo estudiar en el IPESFA?",
+      "carreras del IPESFA",
+      "oferta académica",
+      "qué se puede estudiar"
+    ],
+    "answer": "El IPESFA ofrece 9 profesorados de grado (4 años, presenciales, título oficial con validez nacional): Educación Inicial, Educación Primaria, Educación Especial, Lengua y Literatura, Matemática, Biología, Geografía, Historia e Inglés. También ofrece la Certificación Docente (2 años, presencial) para profesionales titulados de nivel superior. Más info: https://ipesfa-ushuaia.edu.ar/oferta-academica/",
+    "tags": ["oferta academica", "carreras", "profesorados"]
+  },
+  {
+    "id": "inscripciones-profesorados",
+    "question": "¿Cómo y cuándo me inscribo a un profesorado?",
+    "alt_questions": [
+      "¿Cuándo son las inscripciones?",
+      "¿Cómo me inscribo?",
+      "inscripciones abiertas"
+    ],
+    "answer": "Las preinscripciones a los profesorados se publican a mitad de año y a fin de año — hay que estar atento a esos períodos, cuando se habilitan los formularios correspondientes. Para consultas, escribí a ciclointroductorio@ipesfa-ushuaia.edu.ar.",
+    "tags": ["inscripciones", "ciclo introductorio"]
+  },
+  {
+    "id": "secretaria-contacto",
+    "question": "¿Cuál es el horario de atención de secretaría y cómo la contacto?",
+    "alt_questions": [
+      "horario de secretaria",
+      "teléfono de secretaria",
+      "cómo contacto a secretaria",
+      "mail de secretaria"
+    ],
+    "answer": "Secretaría atiende de lunes a viernes de 8:00 a 21:30 hs. Teléfono: (2901) 577953. Correo: administracion@ipesfa-ushuaia.edu.ar. Ahí también podés consultar sobre Normativa Vigente, Reválida Docente y Actualización de titulación docente.",
+    "tags": ["secretaria", "horarios", "contacto"]
+  },
+  {
+    "id": "capacitacion-secciones",
+    "question": "¿Qué actividades de capacitación ofrece el IPESFA?",
+    "alt_questions": [
+      "qué cursos de capacitación hay",
+      "capacitación docente",
+      "cátedras abiertas"
+    ],
+    "answer": "La sección Capacitación incluye: Cursos, Cátedras Abiertas, Actualización, Lineamientos y Modelo de Propuestas. Para el detalle vigente de cada una, visitá https://ipesfa-ushuaia.edu.ar/capacitacion/ o consultá las Novedades del sitio.",
+    "tags": ["capacitacion", "cursos"]
+  },
+  {
+    "id": "estudiantes-tramites",
+    "question": "¿Qué trámites puedo hacer como estudiante?",
+    "alt_questions": [
+      "trámites de estudiantes",
+      "constancia de alumno regular",
+      "solicitud de becas"
+    ],
+    "answer": "En la sección Estudiantes podés gestionar: Trámites de Equivalencia, Solicitud de Programas, Constancia de Estudiantes y Becas. Más info en https://ipesfa-ushuaia.edu.ar/estudiantes/",
+    "tags": ["estudiantes", "tramites", "becas"]
+  },
+  {
+    "id": "consejo-directivo",
+    "question": "¿Cómo está conformado el Consejo Directivo?",
+    "alt_questions": [
+      "¿Quiénes son los consejeros actuales?",
+      "¿Quiénes integran el Consejo Directivo?",
+      "consejeros del IPESFA",
+      "integrantes del consejo"
+    ],
+    "answer": "El Consejo Directivo del IPESFA está conformado por representantes de cuatro claustros, elegidos por votación directa: Claustro Docente (mandato de 3 años) — titulares: Valeria Busaniche, Ariel Gomez, Federico Jaime, Luciana Larrondo, Laura Sanchez Azcurra, Paola Vega y Lourdes Massey; suplentes: Mariana Castilla, Marina Feltrin y Silvina Lescano. Claustro Estudiante (mandato de 1 año) — titulares: Jacqueline Casarosa, Micaela Aguirres, Paola Mancilla, Olivia Azcurra, M. Guadalupe Castillo y Amanda Vorja; suplentes: Martina Gonzalez, Francisco Celador y Demián Leonardi. Claustro No Docente (mandato de 3 años) — titular: Natalia Bozzi; suplente: Raúl Maure. Claustro Egresado (mandato de 2 años) — titular: Marcos Lugones; suplente: Klevel Barrientos. Más info: https://ipesfa-ushuaia.edu.ar/institucion/consejo-directivo/",
+    "tags": ["consejo directivo", "institucion", "autoridades"]
+  },
+  {
+    "id": "investigaciones-instituto",
+    "question": "¿Dónde puedo ver las investigaciones del instituto?",
+    "alt_questions": [
+      "investigaciones del IPESFA",
+      "publicaciones de investigación"
+    ],
+    "answer": "El instituto organiza sus investigaciones en: Investigación Institucional, Investigaciones FA, Publicaciones y Novedades, con reseñas de investigaciones concluidas y actuales. Más info en https://ipesfa-ushuaia.edu.ar/investigacion/investigaciones/",
+    "tags": ["investigacion", "publicaciones"]
+  }
+]
