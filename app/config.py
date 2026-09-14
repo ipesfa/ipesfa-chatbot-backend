@@ -27,6 +27,10 @@ class Config:
 
     FORCE_GEMINI_FAILURE = os.environ.get("FORCE_GEMINI_FAILURE", "").lower() in ("1", "true", "yes")
 
+    # Secreto compartido con el webhook de GitHub para /deploy-webhook (ver
+    # app/deploy.py) — nunca se define acá como default, solo vía env var.
+    WEBHOOK_SECRET = os.environ.get("WEBHOOK_SECRET", "")
+
     DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data")
     FAQS_PATH = os.path.join(DATA_DIR, "faqs.json")
     FAQ_INDEX_PATH = os.path.join(DATA_DIR, "faq_index.npz")

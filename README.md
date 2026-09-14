@@ -35,13 +35,32 @@ reflejen en el matching.
 
 ## Deploy (cPanel — Setup Python App)
 
-1. Crear la app Python en cPanel (una para dev, una para producción).
-2. Configurar variables de entorno desde la UI de cPanel (ver `.env.example`
-   para la lista completa) — nunca subir `.env` al repo.
-3. Dejar "Number of processes" en **1** (el rate limiting es en memoria).
-4. Subir `webhook-deploy.php` a la carpeta de la app, completar `$secret` y
-   `$venvActivate`, y configurar el webhook en GitHub apuntando a esa URL
-   (evento `push`, content-type `application/json`, mismo secreto).
-5. Configurar un cron job semanal/quincenal corriendo
+1. Crear la app Python en cPanel (una para dev, una para producción). **Si el
+   dominio elegido ya tiene un sitio real (WordPress) en la raíz, poner
+   SIEMPRE un path** (ej. `chat-api-dev`), nunca dejarlo vacío — si no, la
+   Python App toma control de todo el subdominio y tumba lo que ya estaba ahí.
+2. En el `.htaccess` que genera cPanel para la app, agregar `RewriteEngine Off`
+   justo después del bloque de Passenger — sin esto, si el sitio WordPress de
+   ese mismo dominio regenera sus reglas de reescritura (ej. al guardar
+   Permalinks), su catch-all (`RewriteRule . /index.php`) puede interceptar
+   las rutas de la app (`/health`, `/chat`, `/deploy-webhook`) devolviendo el
+   404 de WordPress en vez de llegar a Flask.
+3. Configurar variables de entorno desde la UI de cPanel (ver `.env.example`
+   para la lista completa) — nunca subir `.env` al repo. **Ojo**: cPanel las
+   guarda como `SetEnv` en el `.htaccess` de la app, en texto plano — nunca
+   hacer `cat` completo de ese archivo, usar `grep`/`sed` acotado.
+4. Dejar "Number of processes" en **1** (el rate limiting es en memoria).
+5. Crear/editar el `.env` de la app en el servidor (no versionado) con, además
+   de las variables normales: `WEBHOOK_SECRET=<un secreto random>` y
+   `VENV_ACTIVATE=/home/USUARIO/virtualenv/RUTA_APP/3.x/bin/activate` (la ruta
+   exacta la muestra cPanel al crear la app). Necesario para correr
+   `reindex.py` a mano/por cron (las env vars de cPanel no llegan a una
+   terminal manual) y para el endpoint de deploy automático.
+6. Configurar el webhook en GitHub apuntando a
+   `https://TU-DOMINIO/TU-PATH/deploy-webhook` (evento `push`, content-type
+   `application/json`, mismo `WEBHOOK_SECRET`). Es una ruta de Flask
+   (`app/deploy.py`), no un script PHP — un `.php` suelto en la carpeta de la
+   app no se puede ejecutar porque Passenger intercepta toda esa URI.
+7. Configurar un cron job semanal/quincenal corriendo
    `.../bin/python scripts/reindex.py` con `WP_BASE_URL` apuntando al sitio
    de ese entorno.
