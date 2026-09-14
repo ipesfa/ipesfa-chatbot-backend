@@ -102,7 +102,10 @@ def retrieve_context(query_vec: np.ndarray, k: int, query_text: str = "") -> lis
     ]
 
 
-def build_prompt(message: str, chunks: list[dict]) -> str:
+NO_CONTEXT_SENTINEL = "SIN_CONTEXTO"
+
+
+def build_prompt(message: str, chunks: list[dict], has_fallback: bool = False) -> str:
     if not chunks:
         context = "(sin contenido relevante encontrado)"
     else:
@@ -111,6 +114,31 @@ def build_prompt(message: str, chunks: list[dict]) -> str:
             + (f" — actualizado {c['date'][:10]}" if c.get("date") else "")
             + f" — {c['url']}]\n{c['text']}"
             for c in chunks
+        )
+
+    # has_fallback=True: routes.py tiene una FAQ genérica lista para usar si
+    # Gemini no encuentra nada — en ese caso le pedimos una señal exacta y
+    # parseable en vez de una disculpa en lenguaje natural (evita tener que
+    # adivinar por texto libre si "encontró algo" o no, que resultó poco
+    # confiable: Gemini a veces agrega la sugerencia de reformular incluso
+    # cuando SÍ respondió bien con datos reales del contexto).
+    if has_fallback:
+        insufficient_instruction = (
+            f'Si el contexto no tiene NINGUNA información relacionada con la '
+            f'pregunta, respondé ÚNICAMENTE con el texto exacto "{NO_CONTEXT_SENTINEL}" '
+            f'(nada más, sin explicaciones). Si el contexto tiene aunque sea '
+            f'información parcial relevante, respondé normalmente usando esa '
+            f'información, sin agregar sugerencias de reformular ni el mail de contacto.'
+        )
+    else:
+        insufficient_instruction = (
+            'Si el contexto no alcanza para responder, decilo explícitamente y '
+            'pedile que intente reformular la pregunta con otras palabras o de '
+            'forma más específica (puede que la búsqueda no haya encontrado el '
+            'contenido correcto, no necesariamente que no exista). No tenés '
+            'memoria de mensajes anteriores, así que en esa misma respuesta '
+            'agregá también que si reformulando tampoco encuentra lo que busca, '
+            'puede escribir a administracion@ipesfa-ushuaia.edu.ar.'
         )
 
     return f"""Sos el asistente virtual del sitio del IPESFA (Instituto Provincial de \
@@ -123,12 +151,7 @@ Hoy es {date.today().isoformat()}. Si el contexto incluye fechas, usalas para ju
 si algo (un taller, una convocatoria, una inscripción) sigue vigente o ya pasó, y \
 aclaralo en la respuesta en vez de ignorarlo.
 
-Si el contexto no alcanza para responder, decilo explícitamente y pedile que \
-intente reformular la pregunta con otras palabras o de forma más específica \
-(puede que la búsqueda no haya encontrado el contenido correcto, no \
-necesariamente que no exista). No tenés memoria de mensajes anteriores, así \
-que en esa misma respuesta agregá también que si reformulando tampoco \
-encuentra lo que busca, puede escribir a administracion@ipesfa-ushuaia.edu.ar. \
+{insufficient_instruction} \
 Nunca inventes datos (horarios, fechas, requisitos) que no estén en el contexto.
 
 CONTEXTO:

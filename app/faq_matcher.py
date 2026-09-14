@@ -116,4 +116,13 @@ def match_faq(query_vec: np.ndarray, query_text: str = "") -> dict | None:
     if not faq:
         return None
 
-    return {"id": faq_id, "answer": faq["answer"], "score": best_score}
+    return {
+        "id": faq_id,
+        "answer": faq["answer"],
+        "score": best_score,
+        # FAQs "de navegación" (armadas porque la página real está vacía en
+        # la API de WP, ver reindex.py) no deberían ganarle a una respuesta
+        # de RAG más específica y vigente — solo se usan si RAG no encuentra
+        # nada con confianza suficiente (ver routes.py).
+        "fallback_only": faq.get("fallback_only", False),
+    }

@@ -44,7 +44,8 @@
       "cátedras abiertas"
     ],
     "answer": "La sección Capacitación incluye: Cursos, Cátedras Abiertas, Actualización, Lineamientos y Modelo de Propuestas. Para el detalle vigente de cada una, visitá https://ipesfa-ushuaia.edu.ar/capacitacion/ o consultá las Novedades del sitio.",
-    "tags": ["capacitacion", "cursos"]
+    "tags": ["capacitacion", "cursos"],
+    "fallback_only": true
   },
   {
     "id": "estudiantes-tramites",
@@ -55,7 +56,8 @@
       "solicitud de becas"
     ],
     "answer": "En la sección Estudiantes podés gestionar: Trámites de Equivalencia, Solicitud de Programas, Constancia de Estudiantes y Becas. Más info en https://ipesfa-ushuaia.edu.ar/estudiantes/",
-    "tags": ["estudiantes", "tramites", "becas"]
+    "tags": ["estudiantes", "tramites", "becas"],
+    "fallback_only": true
   },
   {
     "id": "consejo-directivo",
@@ -80,6 +82,7 @@
       "publicaciones de investigación"
     ],
     "answer": "El instituto organiza sus investigaciones en: Investigación Institucional, Investigaciones FA, Publicaciones y Novedades, con reseñas de investigaciones concluidas y actuales. Más info en https://ipesfa-ushuaia.edu.ar/investigacion/investigaciones/",
-    "tags": ["investigacion", "publicaciones"]
+    "tags": ["investigacion", "publicaciones"],
+    "fallback_only": true
   }
 ]
