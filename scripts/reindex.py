@@ -37,13 +37,19 @@ def _parse_json_tolerant(text: str) -> list[dict]:
 
 
 def _wp_get(path: str, params: dict) -> list[dict]:
-    """Pagina un endpoint de la WP REST API y devuelve todos los items."""
+    """Pagina un endpoint de la WP REST API y devuelve todos los items.
+
+    Usa la forma ?rest_route=/wp/v2/... en vez de /wp-json/wp/v2/... — esta
+    última depende de que la reescritura de URLs "bonitas" esté funcionando,
+    y se confirmó que en dev.ipesfa-ushuaia.edu.ar no lo está (404). La forma
+    con query string es igual de oficial/soportada por WP y no depende de eso.
+    """
     items: list[dict] = []
     page = 1
     while True:
         resp = requests.get(
-            f"{Config.WP_BASE_URL}/wp-json/wp/v2/{path}",
-            params={**params, "page": page, "per_page": PER_PAGE},
+            f"{Config.WP_BASE_URL}/",
+            params={"rest_route": f"/wp/v2/{path}", **params, "page": page, "per_page": PER_PAGE},
             verify=Config.WP_VERIFY_SSL,
             timeout=20,
         )
