@@ -7,7 +7,7 @@ from datetime import date
 import numpy as np
 
 from .config import Config
-from .text_utils import fuzzy_matched_tokens, tokenize
+from .text_utils import fuzzy_matched_tokens, tokenize_with_synonyms
 
 _cache = {"mtime": None, "vectors": None, "meta": None, "title_doc_freq": None}
 
@@ -54,7 +54,7 @@ def _reload_if_stale() -> None:
     # Capacitación/Cursos — sin esto, esas preguntas genéricas de sección no
     # encuentran nada porque no hay ninguna palabra en común con el título.
     title_tokens_per_row = [
-        tokenize(f"{m['title']} {m.get('categories', '')}") for m in meta
+        tokenize_with_synonyms(f"{m['title']} {m.get('categories', '')}") for m in meta
     ]
     title_doc_freq: dict[str, int] = {}
     for tokens in title_tokens_per_row:
@@ -84,7 +84,7 @@ def retrieve_context(query_vec: np.ndarray, k: int, query_text: str = "") -> lis
 
     scores = vectors @ query_vec
 
-    query_tokens = tokenize(query_text) if query_text else set()
+    query_tokens = tokenize_with_synonyms(query_text) if query_text else set()
     if query_tokens:
         title_doc_freq = _cache["title_doc_freq"]
         title_tokens_per_row = _cache["title_tokens_per_row"]

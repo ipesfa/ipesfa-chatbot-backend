@@ -46,7 +46,19 @@ def tokenize(text: str) -> set[str]:
     normalized = unicodedata.normalize("NFKD", text.lower())
     normalized = "".join(c for c in normalized if not unicodedata.combining(c))
     words = re.findall(r"[a-z0-9]+", normalized)
-    tokens = {stem(w) for w in words if w not in STOPWORDS}
+    return {stem(w) for w in words if w not in STOPWORDS}
+
+
+def tokenize_with_synonyms(text: str) -> set[str]:
+    """Como `tokenize()`, pero además expande sinónimos de dominio (ver
+    SYNONYM_EXPANSIONS). Deliberadamente NO es lo que usa `faq_matcher.py`:
+    ahí la expansión "taller -> capacitación/curso" hacía que preguntas
+    puntuales y con matiz temporal (ej. "¿hay un taller vigente ahora?")
+    engancharan de más con la FAQ genérica de secciones de Capacitación,
+    ganándole a una respuesta de RAG con fecha real que sí puede contestar
+    eso. Solo `rag.py` la usa, para encontrar contenido categorizado aunque
+    el título no diga la palabra literal."""
+    tokens = tokenize(text)
     for token in list(tokens):
         tokens.update(SYNONYM_EXPANSIONS.get(token, []))
     return tokens
