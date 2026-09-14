@@ -23,7 +23,14 @@ def _get_model() -> TextEmbedding:
 
 
 def _embed(texts: list[str]) -> np.ndarray:
-    vectors = np.array(list(_get_model().embed(texts)), dtype=np.float32)
+    # batch_size chico a propósito: en hosting compartido con memoria limitada
+    # (confirmado: el proceso murió por OOM al pedirle a fastembed que arme
+    # de una un solo batch de ~200 textos, con el default batch_size=256).
+    # Un batch más chico mantiene el pico de memoria acotado sin importar
+    # cuántos textos se embeban en total.
+    vectors = np.array(
+        list(_get_model().embed(texts, batch_size=8)), dtype=np.float32
+    )
     norms = np.linalg.norm(vectors, axis=1, keepdims=True)
     norms[norms == 0] = 1.0
     return vectors / norms
