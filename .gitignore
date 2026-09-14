@@ -6,6 +6,7 @@ data/*.npz
 data/*_ids.json
 data/content_meta.json
 deploy.log
+reindex.log
 models/
 .certs/
 .DS_Store
