@@ -74,7 +74,19 @@ def fetch_pages() -> list[dict]:
 
 def fetch_recent_posts() -> list[dict]:
     since = datetime.now(timezone.utc) - timedelta(days=30 * Config.POSTS_WINDOW_MONTHS)
-    return _wp_get("posts", {"status": "publish", "after": since.isoformat()})
+    return _wp_get("posts", {"status": "publish", "after": since.isoformat(), "_embed": "wp:term"})
+
+
+def category_names(item: dict) -> str:
+    """Nombres de categorías/tags de WP (via _embed=wp:term), sin 'Sin
+    categoría'. Muchos posts reales no dicen "taller"/"capacitación" en el
+    título (ej. "Teledetección e imágenes satelitales..."), pero SÍ están
+    categorizados como Capacitación/Cursos — sin esto, el boost por palabra
+    clave no tiene nada que enganchar y esos posts quedan invisibles para
+    preguntas genéricas de sección."""
+    groups = item.get("_embedded", {}).get("wp:term", [])
+    names = {t["name"] for group in groups for t in group if t.get("name") != "Sin categoría"}
+    return " ".join(sorted(names))
 
 
 def html_to_text(html: str) -> str:
@@ -145,6 +157,10 @@ def build_content_index() -> None:
                         # actualizada está la info que "date" (creación). Gemini la
                         # usa para juzgar vigencia en vez de asumir o inventar.
                         "date": item.get("modified") or item.get("date", ""),
+                        # Categorías/tags de WP: se usan para el boost por
+                        # palabra clave (ver app/rag.py) cuando el título no
+                        # menciona la sección literalmente.
+                        "categories": category_names(item),
                     }
                 )
                 # El título se suma al texto embebido (no al texto guardado/mostrado)

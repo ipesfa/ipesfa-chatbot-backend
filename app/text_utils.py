@@ -31,11 +31,25 @@ def stem(token: str) -> str:
     return token[:STEM_PREFIX_LEN] if len(token) > STEM_PREFIX_LEN else token
 
 
+# Sinónimos de dominio: palabras coloquiales que un usuario real usa pero que
+# no coinciden con el vocabulario de categorías de WP del sitio (ej. la gente
+# dice "taller", pero los posts están categorizados "Capacitación"/"Cursos",
+# nunca literalmente "Taller"). Se expande DESPUÉS de tokenizar/stemear, así
+# que aplica tanto a la pregunta del usuario como al título/categorías del
+# contenido por igual.
+SYNONYM_EXPANSIONS: dict[str, list[str]] = {
+    "talle": ["capac", "curso"],  # taller/talleres -> Capacitación/Cursos
+}
+
+
 def tokenize(text: str) -> set[str]:
     normalized = unicodedata.normalize("NFKD", text.lower())
     normalized = "".join(c for c in normalized if not unicodedata.combining(c))
     words = re.findall(r"[a-z0-9]+", normalized)
-    return {stem(w) for w in words if w not in STOPWORDS}
+    tokens = {stem(w) for w in words if w not in STOPWORDS}
+    for token in list(tokens):
+        tokens.update(SYNONYM_EXPANSIONS.get(token, []))
+    return tokens
 
 
 def fuzzy_matched_tokens(query_tokens: set[str], target_tokens: set[str]) -> set[str]:

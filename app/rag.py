@@ -48,7 +48,14 @@ def _reload_if_stale() -> None:
         # Índice a medio escribir o corrupto: RAG queda no disponible esta request.
         return
 
-    title_tokens_per_row = [tokenize(m["title"]) for m in meta]
+    # Categorías/tags de WP se suman al título para el boost: muchos posts
+    # reales no dicen "taller"/"capacitación" en el título (ej. "Teledetección
+    # e imágenes satelitales...") pero SÍ están categorizados como
+    # Capacitación/Cursos — sin esto, esas preguntas genéricas de sección no
+    # encuentran nada porque no hay ninguna palabra en común con el título.
+    title_tokens_per_row = [
+        tokenize(f"{m['title']} {m.get('categories', '')}") for m in meta
+    ]
     title_doc_freq: dict[str, int] = {}
     for tokens in title_tokens_per_row:
         for token in tokens:

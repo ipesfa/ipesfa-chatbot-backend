@@ -8,3 +8,4 @@ data/content_meta.json
 deploy.log
 models/
 .certs/
+.DS_Store
