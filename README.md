@@ -1,5 +1,7 @@
 # ipesfa-chatbot-backend
 
+Deploy automático activo en dev (`dev.ipesfa-ushuaia.edu.ar/chat-api-dev`).
+
 Backend del chatbot de consultas del sitio del IPESFA. Flask + `fastembed` (embeddings
 locales en CPU) + Gemini API (free tier) para generación, con un set fijo de FAQs
 que se responde sin llamar a Gemini cuando hay match de alta confianza.
